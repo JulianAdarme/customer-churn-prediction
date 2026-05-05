@@ -12,6 +12,13 @@ This project focuses on predicting customer churn using machine learning techniq
 
 IBM Telco Customer Churn dataset, including customer demographics, services, and account information.
 
+The data set includes information about:
+
+- Customers who left within the last month – the column is called Churn
+- Services that each customer has signed up for – phone, multiple lines, internet, online security, online backup, device protection, tech support, and streaming TV and movies
+- Customer account information – how long they’ve been a customer, contract, payment method, paperless billing, monthly charges, and total charges
+- Demographic info about customers – gender, age range, and if they have partners and dependents
+
 ---
 
 ## ⚙️ Approach
@@ -34,10 +41,16 @@ IBM Telco Customer Churn dataset, including customer demographics, services, and
 
 ## 🧠 Key Insight
 
-Customers with month-to-month contracts and higher monthly charges are more likely to churn.
+- Customers with month-to-month contracts show higher churn rates
+- Higher monthly charges are associated with increased churn risk
+- Lack of additional services (e.g., tech support) may increase churn probability
 
 ---
 
 ## 🚀 Conclusion
 
-The model provides a solid baseline for identifying at-risk customers and supporting data-driven retention strategies.
+The model can be used as a base for implementing customer retention strategies focused on high-risk users.
+
+It prioritizes recall to reduce the number of missed churn cases, aligning with business impact.
+
+The model can be further improved with additional data and features.
