@@ -2,9 +2,11 @@
 EN- Customer churn prediction using logistic regression with threshold tuning and class imbalance handling.
 SP- Prediccón de abando de clientes usando regresión logistica con umbral de decisión y manejo de imbalance en datos.
 
-## 📌 Overview
+## Overview
 
-This project focuses on predicting customer churn using machine learning techniques. The goal is to identify customers at risk of leaving in order to support retention strategies.
+I built this project to explore how machine learning can be used to identify customers likely to leave a service.
+
+One of the main challenges in this dataset was class imbalance, so I experimented with class weighting and different decision thresholds to improve churn detection instead of focusing only on overall accuracy.
 
 ---
 
@@ -21,35 +23,41 @@ The data set includes information about:
 
 ---
 
-## ⚙️ Approach
+## Approach
 
-- Data cleaning and preprocessing  
-- Feature encoding  
-- Logistic Regression model  
-- Handling class imbalance with `class_weight`  
-- Threshold tuning to improve recall  
+- Cleaned and prepared customer data for modeling
+- Encoded categorical variables
+- Trained a Logistic Regression model
+- Used class weighting to reduce bias toward non-churn customers
+- Tested multiple decision thresholds to improve recall
 
 ---
 
-## 📈 Results
+## Results
 
-- ROC-AUC: ~0.83  
-- Improved churn detection through threshold adjustment  
-- Balanced trade-off between precision and recall  
+Using a decision threshold of 0.4 produced the best balance between recall and overall model stability.
+
+Main results:
+- Recall: 79%
+- ROC-AUC: 0.83
+
+The model became significantly better at identifying customers likely to churn, even at the cost of lower precision.
 
 ---
 
 ## 🧠 Key Insight
 
-- Customers with month-to-month contracts show higher churn rates
-- Higher monthly charges are associated with increased churn risk
-- Lack of additional services (e.g., tech support) may increase churn probability
+- Customers with month-to-month contracts showed noticeably higher churn rates
+- Customers using additional support services tended to stay longer
+- Lowering the decision threshold improved churn detection considerably
 
 ---
 
-## 🚀 Conclusion
+## Conclusion
 
-The model can be used as a base for implementing customer retention strategies focused on high-risk users.
+This project helped me understand the trade-off between precision and recall in imbalanced classification problems.
+
+It also showed how threshold tuning can sometimes be more important than improving raw accuracy.
 
 It prioritizes recall to reduce the number of missed churn cases, aligning with business impact.
 
