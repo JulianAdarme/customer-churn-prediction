@@ -35,7 +35,7 @@ The data set includes information about:
 
 ## Results
 
-Using a decision threshold of 0.4 produced the best balance between recall and overall model stability.
+Using a decision threshold of 0.4 produced the best balance between recall and precision.
 
 Main results:
 - Recall: 79%
@@ -59,6 +59,6 @@ This project helped me understand the trade-off between precision and recall in 
 
 It also showed how threshold tuning can sometimes be more important than improving raw accuracy.
 
-It prioritizes recall to reduce the number of missed churn cases, aligning with business impact.
+The final model prioritizes recall to identify more customers at risk of leaving.
 
-The model can be further improved with additional data and features.
+The model can be further improved with additional data.
