@@ -1,64 +1,75 @@
-# customer-churn-prediction
-EN- Customer churn prediction using logistic regression with threshold tuning and class imbalance handling.
-SP- Prediccón de abando de clientes usando regresión logistica con umbral de decisión y manejo de imbalance en datos.
-
-## Overview
-
-I built this project to explore how machine learning can be used to identify customers likely to leave a service.
-
-One of the main challenges in this dataset was class imbalance, so I experimented with class weighting and different decision thresholds to improve churn detection instead of focusing only on overall accuracy.
+# Customer Churn Prediction
+**IBM Telco Dataset · Logistic Regression · scikit-learn**
 
 ---
 
-## 📊 Dataset
+## What this is
 
-IBM Telco Customer Churn dataset, including customer demographics, services, and account information.
+A telecom company loses revenue every time a customer cancels their subscription. The problem is that by the time they cancel, it's too late to do anything about it. This project builds a model to flag customers *before* they leave, so a retention team can act early.
 
-The data set includes information about:
-
-- Customers who left within the last month – the column is called Churn
-- Services that each customer has signed up for – phone, multiple lines, internet, online security, online backup, device protection, tech support, and streaming TV and movies
-- Customer account information – how long they’ve been a customer, contract, payment method, paperless billing, monthly charges, and total charges
-- Demographic info about customers – gender, age range, and if they have partners and dependents
-
----
-
-## Approach
-
-- Cleaned and prepared customer data for modeling
-- Encoded categorical variables
-- Trained a Logistic Regression model
-- Used class weighting to reduce bias toward non-churn customers
-- Tested multiple decision thresholds to improve recall
+The dataset is the IBM Telco Customer Churn dataset, which includes contract type, billing information, service usage, and payment method for ~7,000 customers.
 
 ---
 
 ## Results
 
-Using a decision threshold of 0.4 produced the best balance between recall and precision.
+| Metric | Value |
+|--------|-------|
+| ROC-AUC | 0.83 |
+| Churn Recall (final) | 75–79% |
+| Decision Threshold | 0.3 |
 
-Main results:
-- Recall: 79%
-- ROC-AUC: 0.83
-
-The model became significantly better at identifying customers likely to churn, even at the cost of lower precision.
-
----
-
-## 🧠 Key Insight
-
-- Customers with month-to-month contracts showed noticeably higher churn rates
-- Customers using additional support services tended to stay longer
-- Lowering the decision threshold improved churn detection considerably
+At the selected threshold, roughly 3 out of 4 customers who would have churned are correctly flagged before they leave.
 
 ---
 
-## Conclusion
+## The approach
 
-This project helped me understand the trade-off between precision and recall in imbalanced classification problems.
+**1. EDA**
+The three strongest signals for churn turned out to be contract type, monthly charges, and tech support. Month-to-month customers churn at ~43%, compared to 11% for one-year and 3% for two-year contracts. That gap alone drives most of the model's predictive power.
 
-It also showed how threshold tuning can sometimes be more important than improving raw accuracy.
+**2. Preprocessing**
+Features were selected based on business relevance rather than throwing everything at the model. Demographic variables (gender, SeniorCitizen, Dependents) showed low correlation with churn and were dropped. Categorical variables were encoded using one-hot encoding for nominal features (InternetService, PaymentMethod) and ordinal encoding for contract type, which has a natural order.
 
-The final model prioritizes recall to identify more customers at risk of leaving.
+**3. Handling class imbalance**
+Churn represents ~26% of the dataset. A default logistic regression model ignores this and only achieves 47% recall on the churn class — meaning it misses more than half the customers who actually leave. Two adjustments were applied:
+- `class_weight={0:1, 1:2}` to penalize missed churners more heavily during training
+- Threshold tuning from 0.5 down to 0.3, evaluated across five candidate values
 
-The model can be further improved with additional data.
+**4. Threshold selection**
+The default 0.5 threshold is calibrated for balanced classes. At 0.3, churn recall reaches 75% with precision at 0.55 — meaning that for every 100 customers flagged as at-risk, about 55 will actually churn. In most retention contexts, the cost of missing a churner (lost revenue) exceeds the cost of a false alarm (an unnecessary discount or call), so this tradeoff is intentional.
+
+---
+
+## Key patterns
+
+| Feature | What the data shows |
+|---------|---------------------|
+| Contract type | Month-to-month → 43% churn rate |
+| Monthly charges | Churners have a higher median billing amount |
+| Tech support | No tech support is associated with higher churn |
+| Payment method | Electronic check users churn more often |
+
+---
+
+## Project structure
+
+```
+CustomerChurn.ipynb     # Full notebook: EDA → preprocessing → model → evaluation
+Customer_Churn.csv      # IBM Telco dataset
+```
+
+---
+
+## Limitations and next steps
+
+- `TotalCharges` and some service features (`OnlineSecurity`, `OnlineBackup`) were excluded in this version. A follow-up should clean and retain them.
+- Only logistic regression was tested. Tree-based models like XGBoost would likely improve recall without sacrificing as much precision, and handle non-linear feature interactions better.
+- The model was trained on a static snapshot. In production, churn patterns shift over time and the model would need periodic retraining on recent data.
+- A Streamlit interface would make the model usable by non-technical stakeholders for individual customer lookups.
+
+---
+
+## Stack
+
+`pandas` · `scikit-learn` · `seaborn` · `matplotlib`
